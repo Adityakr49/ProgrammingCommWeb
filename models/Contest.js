@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const ContestSchema = new mongoose.Schema({
     image: {
         data: Buffer, // Binary data for the image
-        contentType: String // Content type of the image (e.g., 'image/jpeg')
+        contentType: String, // Content type of the image (e.g., 'image/jpeg')
     },
     name: {
         type: String,

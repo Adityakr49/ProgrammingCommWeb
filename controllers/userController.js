@@ -1,47 +1,84 @@
 const User = require('../models/User');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
+const {
+  createTokenUser,
+  attachCookiesToResponse,
+  checkPermissions,
+} = require('../utils');
 
-const register = async (req, res) => {
-  res.send("ok")
-
-  // const { email, name, password, year } = req.body;
-
-  // const emailAlreadyExists = await User.findOne({ email });
-  // if (emailAlreadyExists) {
-  //   throw new CustomError.BadRequestError('Email already exists');
-  // }
-
-  // const user = await User.create({ name, email, password, year });
-  // res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
+const getAllUsers = async (req, res) => {
+  console.log(req.user);
+  const users = await User.find({ role: 'user' }).select('-password');
+  res.status(StatusCodes.OK).json({ users });
 };
 
-const login = async (req, res) => {
-  res.send("ok")
-
-  // const { email, password } = req.body
-
-  // if (!email || !password) {
-  //   throw new BadRequestError('Please provide email and password')
-  // }
-  // const user = await User.findOne({ email })
-  // if (!user) {
-  //   throw new UnauthenticatedError('Invalid Credentials')
-  // }
-  // const isPasswordCorrect = await user.comparePassword(password)
-  // if (!isPasswordCorrect) {
-  //   throw new UnauthenticatedError('Invalid Credentials')
-  // }
-  // // compare password
-  // const token = user.createJWT()
-  // res.status(StatusCodes.OK).json({ user: { name: user.name }, token })
+const getSingleUser = async (req, res) => {
+  const user = await User.findOne({ _id: req.params.id }).select('-password');
+  if (!user) {
+    throw new CustomError.NotFoundError(`No user with id : ${req.params.id}`);
+  }
+  checkPermissions(req.user, user._id);
+  res.status(StatusCodes.OK).json({ user });
 };
-const logout = async (req, res) => {
-  res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
+
+const showCurrentUser = async (req, res) => {
+  res.status(StatusCodes.OK).json({ user: req.user });
+};
+// update user with user.save()
+const updateUser = async (req, res) => {
+  const { email, name } = req.body;
+  if (!email || !name) {
+    throw new CustomError.BadRequestError('Please provide all values');
+  }
+  const user = await User.findOne({ _id: req.user.userId });
+
+  user.email = email;
+  user.name = name;
+
+  await user.save();
+
+  const tokenUser = createTokenUser(user);
+  attachCookiesToResponse({ res, user: tokenUser });
+  res.status(StatusCodes.OK).json({ user: tokenUser });
+};
+const updateUserPassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  if (!oldPassword || !newPassword) {
+    throw new CustomError.BadRequestError('Please provide both values');
+  }
+  const user = await User.findOne({ _id: req.user.userId });
+
+  const isPasswordCorrect = await user.comparePassword(oldPassword);
+  if (!isPasswordCorrect) {
+    throw new CustomError.UnauthenticatedError('Invalid Credentials');
+  }
+  user.password = newPassword;
+
+  await user.save();
+  res.status(StatusCodes.OK).json({ msg: 'Success! Password Updated.' });
 };
 
 module.exports = {
-  register,
-  login,
-  logout,
+  getAllUsers,
+  getSingleUser,
+  showCurrentUser,
+  updateUser,
+  updateUserPassword,
 };
+
+// update user with findOneAndUpdate
+// const updateUser = async (req, res) => {
+//   const { email, name } = req.body;
+//   if (!email || !name) {
+//     throw new CustomError.BadRequestError('Please provide all values');
+//   }
+//   const user = await User.findOneAndUpdate(
+//     { _id: req.user.userId },
+//     { email, name },
+//     { new: true, runValidators: true }
+//   );
+//   const tokenUser = createTokenUser(user);
+//   attachCookiesToResponse({ res, user: tokenUser });
+//   res.status(StatusCodes.OK).json({ user: tokenUser });
+// };
