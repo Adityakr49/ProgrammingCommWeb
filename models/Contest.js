@@ -1,24 +1,48 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const ContestSchema = new mongoose.Schema({
-    image: {
-        data: Buffer, // Binary data for the image
-        contentType: String, // Content type of the image (e.g., 'image/jpeg')
-    },
+const ContestSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: [true, 'Please provide name'],
-        maxlength: 50,
-        minlength: 3,
+      type: String,
+      required: [true, "Please provide name"],
+      maxlength: 50,
+      minlength: 3,
     },
-    date: {
-        type: Date,
-        required: [true, 'Please provide date'],
+    contestNo: {
+      type: Number,
+      required: [true, "Please provide Contest no"],
     },
-    time: {
-        type: String,
-        required: [true, 'Please provide time'],
-    }
-},
-{ timestamps: true })
-module.exports = mongoose.model('Contest', ContestSchema);
+    type: {
+      type: String,
+      enum: ["weekly", "monthly","biweekly"],
+      default: "weekly",
+    },
+    link: {
+      type: String,
+      required: [true, "Please provide link"],
+    },
+    createdBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: [true, "Please provide user"],
+    },
+    startDate: {
+      type: Date,
+      required: [true, "Please provide date"],
+    },
+    noOfMin: {
+      type: String,
+      required: [true, "Please provide no of Minutes"],
+    },
+    noOfQ: {
+      type: Number,
+      required: [true, "Please provide No of Questions"],
+    },
+    maxMarks: {
+      type: Number,
+      required: [true, "Please provide max Marks"],
+    },
+  },
+  { timestamps: true }
+);
+module.exports = mongoose.model("Contest", ContestSchema);

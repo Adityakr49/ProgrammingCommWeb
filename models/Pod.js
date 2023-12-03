@@ -22,6 +22,9 @@ const problemSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Please provide user"],
     },
+    date: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

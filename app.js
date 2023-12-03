@@ -7,7 +7,7 @@ const app = express();
 // rest of the packages
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 const rateLimiter = require('express-rate-limit');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -20,6 +20,8 @@ const connectDB = require('./db/connect');
 //  routers
 const authRouter = require('./routes/authRoutes');
 const userRouter = require('./routes/userRoutes');
+const podRouter = require('./routes/podRoutes');
+const conRouter = require('./routes/contestRoutes');
 
 // middleware
 const notFoundMiddleware = require('./middleware/not-found');
@@ -45,6 +47,8 @@ app.use(express.static('./public'));
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/pod', podRouter);
+app.use('/api/v1/con', conRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

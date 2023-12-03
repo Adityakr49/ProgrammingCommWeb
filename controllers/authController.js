@@ -17,7 +17,6 @@ const register = async (req, res) => {
     if (emailAlreadyExists) {
       throw new CustomError.BadRequestError("Email already exists");
     }
-
     // If the role is 'admin', check the secret pin
     if (role === "admin" && secretPin !== process.env.MEMBER_ID) {
       throw new CustomError.UnauthorizedError("Invalid Member Id");

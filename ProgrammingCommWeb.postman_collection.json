@@ -1,0 +1,460 @@
+{
+	"info": {
+		"_postman_id": "6f3f656f-35d8-479d-aa61-7f01a382088a",
+		"name": "ProgrammingCommWeb",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28156093"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"jane\",\r\n    \"email\":\"jane@gmail.com\",\r\n    \"password\":\"secret\",\r\n    \"role\":\"user\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL2}}/auth/register",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const AccessToken = pm.cookies.get('token');\r",
+							"pm.globals.set('accessToken',AccessToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"john@gmail.com\",\r\n    \"password\":\"secret\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL2}}/auth/login",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"adityakumarpilot123@gmail.com\",\r\n    \"name\":\"Aditya\",\r\n    \"password\":\"secret\",\r\n    \"role\":\"admin\",\r\n    \"secretPin\":\"CqN9PKTDXHN9Z3C6PgCoY5TQHTXvToX\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL2}}/auth/logout",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllUsers",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL2}}/users/",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "showCurrentUser",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL2}}/users/showMe",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"users",
+						"showMe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateUser",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"john@gmail.com\",\r\n    \"name\":\"john\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL2}}/users/updateUser",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"users",
+						"updateUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateUserPassword",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldPassword\":\"secret1\",\r\n    \"newPassword\":\"secret\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL2}}/users/updateUserPassword",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"users",
+						"updateUserPassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createPod",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Check whether BST contains Dead End\",\r\n    \"link\":\"https://www.geeksforgeeks.org/problems/check-whether-bst-contains-dead-end/1\",\r\n    \"difficulty\":\"Easy\",\r\n    \"date\":\"01/12/2023\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL2}}/pod/createPod",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"pod",
+						"createPod"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PodOfTheDay",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL2}}/pod/",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"pod",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getProbById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL2}}/pod/getPod/6568d230d79134da69e284e7",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"pod",
+						"getPod",
+						"6568d230d79134da69e284e7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updatePod",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"_id\": \"6568d7917fedc869ba15cc35\",\r\n    \"propToChange\":\"date\",\r\n    \"newValue\":\"01/12/2023\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL2}}/pod/updatePod",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"pod",
+						"updatePod"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL2}}/pod/getAll/",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"pod",
+						"getAll",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createContest",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Biweekly Contest 119 LC\",\r\n    \"contestNo\":\"3\",\r\n    \"type\":\"biweekly\",\r\n    \"link\":\"https://leetcode.com/contest/biweekly-contest-119/\",\r\n    \"startDate\":\"2023-12-10\",\r\n    \"noOfMin\":\"90\",\r\n    \"noOfQ\":\"4\",\r\n    \"maxMarks\":\"100\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL2}}/con/createCon",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"con",
+						"createCon"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getContest",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL2}}/con/",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"con",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getContestbyId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL2}}/con/getCon/3",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"con",
+						"getCon",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateContest",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"contestNo\":3,\r\n    \"propToChange\":\"startDate\",\r\n    \"newValue\":\"2023-12-02\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL2}}/con/updateCon",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"con",
+						"updateCon"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteContest",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"contestNo\":\"2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL2}}/con/deleteCon",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"con",
+						"deleteCon"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deletePod",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\":\"1/12/2023\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL2}}/pod/deletePod",
+					"host": [
+						"{{URL2}}"
+					],
+					"path": [
+						"pod",
+						"deletePod"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
