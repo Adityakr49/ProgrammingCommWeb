@@ -43,7 +43,12 @@ app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 
 app.use(express.static('./public'));
-// app.use(fileUpload());
+
+app.use(cors({
+  origin: [process.env.FRONTEND_URL], //allow request only from these site
+  methods: ["GET","POST","PUT","DELETE"],
+  credentials: true  //for getting cookies and other headers from backend
+}))
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);

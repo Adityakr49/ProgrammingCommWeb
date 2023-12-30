@@ -36,7 +36,7 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role, secretPin } = req.body;
 
   if (!email || !password) {
     throw new CustomError.BadRequestError('Please provide email and password');
@@ -51,14 +51,20 @@ const login = async (req, res) => {
     throw new CustomError.UnauthenticatedError('Invalid Credentials');
   }
   const tokenUser = createTokenUser(user);
+  if (tokenUser.role === "admin" && secretPin !== process.env.MEMBER_ID) {
+    throw new CustomError.UnauthorizedError("Email register as core member please provide Member Id");
+  }
+  if (role === "admin" && secretPin !== process.env.MEMBER_ID) {
+    throw new CustomError.UnauthorizedError("Invalid Member Id");
+  }
   attachCookiesToResponse({ res, user: tokenUser });
 
   res.status(StatusCodes.OK).json({ user: tokenUser });
 };
 const logout = async (req, res) => {
-  res.cookie('token', 'logout', {
+  res.cookie('token', '', {
     httpOnly: true,
-    expires: new Date(Date.now() + 1000),
+    expires: new Date(Date.now()),
   });
   res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
 };
